@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>
+        <%= title %>
+    </title>
+
+    <!-- Custom fonts and styles -->
+    <link href="/vendor/fontawesome-free/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Nunito:200,300,400,600,700,800,900" rel="stylesheet">
+    <link href="/css/sb-admin-2.min.css" rel="stylesheet">
+    <link href="/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+
+    <style>
+        .action-buttons .btn {
+            margin: 2px;
+        }
+
+        .badge {
+            font-size: 0.8em;
+        }
+    </style>
+</head>
+
+<body id="page-top">
+    <div id="wrapper">
+        <%- include('../layouts/nurseSidebar.ejs') %>
+
+            <div id="content-wrapper" class="d-flex flex-column">
+                <div id="content">
+                    <%- include('../layouts/navbar.ejs') %>
+
+                        <div class="container-fluid">
+                            <h1 class="h3 mb-2 text-gray-800">Hospital Staff Appointments</h1>
+                            <p class="mb-4">View all appointments grouped by doctor.</p>
+
+                            <% if (success && success.length>0) { %>
+                                <div class="alert alert-success">
+                                    <%= success %>
+                                </div>
+                                <% } %>
+                                    <% if (error && error.length>0) { %>
+                                        <div class="alert alert-danger">
+                                            <%= error %>
+                                        </div>
+                                        <% } %>
+
+                                            <div class="card shadow mb-4">
+                                                <div class="card-body">
+                                                    <ul class="nav nav-tabs" id="roleTabs" role="tablist">
+                                                        <li class="nav-item">
+                                                            <a class="nav-link active" id="doctor-tab" data-toggle="tab"
+                                                                href="#doctor" role="tab">Doctors</a>
+                                                        </li>
+                                                    </ul>
+
+                                                    <div class="tab-content mt-3">
+                                                        <div class="tab-pane fade show active" id="doctor"
+                                                            role="tabpanel">
+                                                            <div class="table-responsive">
+                                                                <table class="table table-bordered doctorTable"
+                                                                    width="100%">
+                                                                    <thead>
+                                                                        <tr>
+                                                                            <th>_ID</th>
+                                                                            <th>Doctor Name</th>
+                                                                            <th>Department</th>
+                                                                            <th> HospitalName</th>
+                                                                            <th>Phone</th>
+                                                                            <th>Patient Name</th>
+                                                                            <th>Age</th>
+                                                                            <th>Patient Email</th>
+                                                                            <th>Appointment Status</th>
+                                                                            <th>Payment Status</th>
+
+                                                                        </tr>
+                                                                    </thead>
+                                                                    <tbody>
+                                                                        <% doctors.forEach(function(doc) { %>
+                                                                            <% doc.appointments.forEach(function(app) {
+                                                                                %>
+                                                                                <tr>
+                                                                                    <td>
+                                                                                        <%= doc._id.toString().slice(-3)
+                                                                                            %>
+                                                                                    </td>
+                                                                                    <td>Dr. <%= doc.name %>
+                                                                                    </td>
+                                                                                    <td>
+                                                                                        <%= doc.department %>
+                                                                                    </td>
+                                                                                    <td>
+                                                                                        <%= doc.hospitalName %>
+                                                                                    </td>
+                                                                                    <td>
+                                                                                        <%= doc.phone %>
+                                                                                    </td>
+                                                                                    <td>
+                                                                                        <%= app.name %>
+                                                                                    </td>
+                                                                                    <td>
+                                                                                        <%= app.age %>
+                                                                                    </td>
+                                                                                    <td>
+                                                                                        <%= app.email %>
+                                                                                    </td>
+                                                                                    <td>
+                                                                                        <%= app.appointmentStatus %>
+                                                                                    </td>
+                                                                                    <td>
+                                                                                        <%= app.paymentStatus %>
+                                                                                    </td>
+
+                                                                                </tr>
+                                                                                <% }) %>
+                                                                                    <% }) %>
+                                                                    </tbody>
+                                                                </table>
+                                                            </div>
+                                                        </div>
+                                                    </div> <!-- tab-content end -->
+                                                </div> <!-- card-body end -->
+                                            </div> <!-- card end -->
+                        </div> <!-- container-fluid end -->
+                </div> <!-- content end -->
+
+
+                <%- include('../layouts/footer.ejs') %>
+            </div> <!-- content-wrapper end -->
+    </div> <!-- wrapper end -->
+
+    <script src="/vendor/jquery/jquery.min.js"></script>
+    <script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="/vendor/jquery-easing/jquery.easing.min.js"></script>
+    <script src="/vendor/datatables/jquery.dataTables.min.js"></script>
+    <script src="/vendor/datatables/dataTables.bootstrap4.min.js"></script>
+    <script src="/js/sb-admin-2.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('.doctorTable').DataTable();
+            setTimeout(() => $('.alert').alert('close'), 5000);
+        });
+    </script>
+</body>
+
+</html>

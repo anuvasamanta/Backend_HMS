@@ -1,0 +1,62 @@
+{
+  "swaggerDefinition": {
+    "info": {
+      "title": "swagger Api doc",
+      "version": "1.0.0",
+      "description": "HMS API documentation create by Anuva Samanta",
+      "contact": {
+        "name": "Anuva Samanta"
+      },
+      "servers": ["http://localhost:8400"]
+    },
+    "tags": [
+      {
+        "name": "auth",
+        "description": "Auth API"
+      },
+      {
+        "name": "admin",
+        "description": "Admin API"
+      },
+      {
+        "name": "doctor",
+        "description": "Doctor API"
+      },
+      {
+        "name": "staff",
+        "description": "Staff API"
+      },
+      {
+        "name": "nurse",
+        "description": "Nurse API"
+      },
+      {
+        "name": "appointment",
+        "description": "Appointment API"
+      },
+      {
+        "name": "hospital",
+        "description": "hospital API"
+      },
+      {
+        "name": "home",
+        "description": "home page API"
+      }
+    ],
+    "schemes": ["https", "http"],
+    "securityDefinitions": {
+      "bearerAuth": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "Authorization",
+        "description": "Bearer token needed to access this API"
+      }
+    },
+    "security": [
+      {
+        "bearerAuth": []
+      }
+    ]
+  },
+  "apis": ["app.js", "./app/router/*.js"]
+}

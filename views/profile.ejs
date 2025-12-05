@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>
+        <%=title%>
+    </title>
+
+    <!-- Custom fonts for this template -->
+    <link href="/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    <link
+        href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+        rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="/css/sb-admin-2.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this page -->
+    <link href="/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+
+    <!-- SweetAlert2 CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+
+    <style>
+        .profile-card {
+            max-width: 500px;
+            margin: auto;
+            border-radius: 20px;
+            background: #ffffff;
+            border: 1px solid #e3e6f0;
+        }
+
+        /* Avatar Circle */
+        .profile-img-letter {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: #4e73df;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 48px;
+            font-weight: bold;
+            color: white;
+            margin: 0 auto 20px auto;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .profile-card p {
+            font-size: 16px;
+        }
+
+        .profile-card hr {
+            margin-top: 15px;
+            margin-bottom: 15px;
+        }
+    </style>
+</head>
+
+<body id="page-top">
+
+    <!-- Page Wrapper -->
+    <div id="wrapper">
+
+        <!-- Sidebar -->
+        <% if(user.role=='admin' ){%>
+            <%- include('./layouts/sidebar.ejs') %>
+                <% }else if(user.role=='staff' ){%>
+                    <%- include('./layouts/staffSidebar.ejs') %>
+                        <% }else if(user.role=='nurse' ){%>
+                    <%- include('./layouts/nurseSidebar.ejs') %>
+                        <% }else{%>
+                            <%- include('./layouts/doctorSidebar.ejs') %>
+                                <%}%>
+
+                                    <!-- End of Sidebar -->
+
+                                    <!-- Content Wrapper -->
+                                    <div id="content-wrapper" class="d-flex flex-column">
+
+                                        <!-- Main Content -->
+                                        <div id="content">
+
+                                            <!-- Topbar -->
+                                            <%- include('./layouts/navbar.ejs') %>
+                                                <!-- End of Topbar -->
+
+                                                <!-- Begin Page Content -->
+                                                <div class="container-fluid">
+
+                                                    <!-- Page Heading -->
+                                                    <h1 class="h3 mb-4 text-gray-800 text-center">My Profile</h1>
+
+                                                    <!-- Profile Card -->
+                                                    <div class="card shadow profile-card p-4 text-center">
+
+                                                        <!-- Dynamic First Letter Profile Avatar -->
+                                                        <div class="profile-img-letter">
+                                                            <%= user.name ? user.name.charAt(0).toUpperCase() : "U" %>
+                                                        </div>
+
+                                                        <h4 class="mb-1">
+                                                            <%= user.name %>
+                                                        </h4>
+                                                        <p class="text-muted mb-2">Role: <strong>
+                                                                <%= user.role %>
+                                                            </strong></p>
+
+                                                        <hr>
+
+                                                        <div class="text-left">
+
+                                                            <p><strong>Email:</strong>
+                                                                <%= user.email %>
+                                                            </p>
+                                                            <% if (user.phone) { %>
+                                                                <p><strong>Phone:</strong>
+                                                                    <%= user.phone %>
+                                                                </p>
+                                                                <% } %>
+
+                                                                    <% if (user.department) { %>
+                                                                        <p><strong>Department:</strong>
+                                                                            <%= user.department %>
+                                                                        </p>
+                                                                        <% } %>
+
+                                                                            <% if (user.specialization) { %>
+                                                                                <p><strong>Specialization:</strong>
+                                                                                    <%= user.specialization %>
+                                                                                </p>
+                                                                                <% } %>
+
+
+
+                                                                                    <% if (user.shifting) { %>
+                                                                                        <p><strong>Shift:</strong>
+                                                                                            <%= user.shifting %>
+                                                                                        </p>
+                                                                                        <% } %>
+                                                        </div>
+
+                                                        <hr>
+                                                        <% if(user.role=='admin' ){%>
+                                                            <a href="/admin/logout"
+                                                                class="btn btn-danger btn-sm">Logout</a>
+                                                            <% }else if(user.role=='staff' ){%>
+                                                                <a href="/staff/logout"
+                                                                    class="btn btn-danger btn-sm">Logout</a>
+                                                                <% }else if(user.role=='nurse' ){%>
+                                                                    <a href="/nurse/logout"
+                                                                        class="btn btn-danger btn-sm">Logout</a>
+                                                                    <% }else{%>
+                                                                        <a href="/doctor/logout"
+                                                                            class="btn btn-danger btn-sm">Logout</a>
+                                                                        <%}%>
+
+
+
+                                                    </div>
+
+                                                </div>
+                                                <!-- /.container-fluid -->
+
+                                        </div>
+                                        <!-- End of Main Content -->
+
+                                        <!-- Footer -->
+                                        <%- include('./layouts/footer.ejs') %>
+                                            <!-- End of Footer -->
+
+                                    </div>
+                                    <!-- End of Content Wrapper -->
+
+    </div>
+    <!-- End of Page Wrapper -->
+
+
+
+    <!-- Scroll to Top Button-->
+    <a class="scroll-to-top rounded" href="#page-top">
+        <i class="fas fa-angle-up"></i>
+    </a>
+
+    <!-- Logout Modal-->
+    <%- include('./layouts/modal.ejs') %>
+
+        <!-- Bootstrap core JavaScript-->
+        <script src="/vendor/jquery/jquery.min.js"></script>
+        <script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+        <!-- Core plugin JavaScript-->
+        <script src="/vendor/jquery-easing/jquery.easing.min.js"></script>
+
+        <!-- SweetAlert2 -->
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>
+
+        <!-- Custom scripts for all pages-->
+        <script src="/js/sb-admin-2.min.js"></script>
+
+        <!-- Page level plugins -->
+        <script src="/vendor/datatables/jquery.dataTables.min.js"></script>
+        <script src="/vendor/datatables/dataTables.bootstrap4.min.js"></script>
+
+        <!-- Page level custom scripts -->
+        <script src="/js/modal.js"></script>
+        <script>
+            $(document).ready(function () {
+                $('.doctorTable, .nurseTable, .staffTable').DataTable();
+            });
+        </script>
+
+
+</body>
+
+</html>

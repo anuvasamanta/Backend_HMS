@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div class="modal fade" id="hospitalDetailsModal" tabindex="-1" role="dialog"
+        aria-labelledby="hospitalDetailsModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="hospitalDetailsModalLabel">Hospital Details</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <% if (hospital && hospital.length> 0) { %>
+                        <% hospital.forEach(h=> { %>
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <h6>Basic Information</h6>
+                                    <p><strong>Hospital Name:</strong>
+                                        <%= h.hospitalName || 'N/A' %>
+                                    </p>
+                                    <p><strong>Address:</strong>
+                                        <%= h.address || 'N/A' %>
+                                    </p>
+                                    <p><strong>Contact Email:</strong>
+                                        <%= h.contactEmail || 'N/A' %>
+                                    </p>
+                                    <p><strong>Contact Phone:</strong>
+                                        <%= h.contactPhone || 'N/A' %>
+                                    </p>
+                                    <% if (h.image) { %>
+                                        <p><strong>Image:</strong> <img src="<%= h.image %>"
+                                                style="max-width:100px; max-height:100px;"></p>
+                                        <% } %>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <h6>Working Hours & Services</h6>
+                                    <p><strong>Opening Time:</strong>
+                                        <%= h.workingHours?.openingTime || 'N/A' %>
+                                    </p>
+                                    <p><strong>Closing Time:</strong>
+                                        <%= h.workingHours?.closingTime || 'N/A' %>
+                                    </p>
+                                    <p><strong>Max Appointments/Day:</strong>
+                                        <%= h.appointmentRules?.maxAppointmentsPerDay || 'N/A' %>
+                                    </p>
+                                    <p><strong>Online Booking:</strong>
+                                        <%= h.appointmentRules?.allowOnlineBooking ? 'Yes' : 'No' %>
+                                    </p>
+                                    <p><strong>Ambulance Service:</strong>
+                                        <%= h.emergencySettings?.ambulanceService ? 'Yes' : 'No' %>
+                                    </p>
+                                    <p><strong>Emergency Contact:</strong>
+                                        <%= h.emergencySettings?.emergencyContact || 'N/A' %>
+                                    </p>
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                <div class="col-md-12">
+                                    <h6>Staff Information</h6>
+                                    <p><strong>Doctors:</strong>
+                                        <%= h.doctorCount || 0 %>
+                                    </p>
+                                    <p><strong>Nurses:</strong>
+                                        <%= h.nurseCount || 0 %>
+                                    </p>
+                                    <p><strong>Staff Members:</strong>
+                                        <%= h.staffCount || 0 %>
+                                    </p>
+                                    <p><strong>Total Staff:</strong>
+                                        <%= (h.doctorCount || 0) + (h.nurseCount || 0) + (h.staffCount || 0) %>
+                                    </p>
+                                </div>
+                            </div>
+
+                            <% if (hospital.indexOf(h) < hospital.length - 1) { %>
+                                <hr>
+                                <% } %>
+                                    <% }) %>
+                                        <% } else { %>
+                                            <div class="alert alert-warning">No hospital data found.</div>
+                                            <% } %>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

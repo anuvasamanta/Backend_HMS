@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title><%= title %></title>
+
+    <!-- Custom fonts and styles -->
+    <link href="/vendor/fontawesome-free/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Nunito:200,300,400,600,700,800,900" rel="stylesheet">
+    <link href="/css/sb-admin-2.min.css" rel="stylesheet">
+    <link href="/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+
+    <style>
+        .action-buttons .btn { margin: 2px; }
+        .badge { font-size: 0.8em; }
+
+        /* Modal styling */
+        .modal-container {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.5); display: none;
+            justify-content: center; align-items: center; z-index: 9999;
+        }
+        .modal-box {
+            background: white; padding: 25px; border-radius: 10px;
+            width: 350px; box-shadow: 0 0 20px rgba(0,0,0,0.3);
+        }
+
+        /* Toaster styling */
+        #toaster {
+            position: fixed; top: 20px; right: 20px;
+            background: #28a745; color: white; padding: 12px 20px;
+            border-radius: 5px; display: none; z-index: 10000;
+            box-shadow: 0 0 10px rgba(0,0,0,0.3);
+        }
+        #toaster.error { background: #dc3545; }
+    </style>
+</head>
+
+<body id="page-top">
+<div id="wrapper">
+    <%- include('../layouts/staffSidebar.ejs') %>
+
+    <div id="content-wrapper" class="d-flex flex-column">
+        <div id="content">
+            <%- include('../layouts/navbar.ejs') %>
+
+            <div class="container-fluid">
+                <h1 class="h3 mb-2 text-gray-800">Hospital Staff Appointments</h1>
+                <p class="mb-4">View all appointments grouped by doctor.</p>
+
+                <% if (success && success.length>0) { %>
+                    <div class="alert alert-success"><%= success %></div>
+                <% } %>
+                <% if (error && error.length>0) { %>
+                    <div class="alert alert-danger"><%= error %></div>
+                <% } %>
+
+                <div class="card shadow mb-4">
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-bordered doctorTable" width="100%">
+                                <thead>
+                                <tr>
+                                    <th>_ID</th>
+                                    <th>Doctor Name</th>
+                                    <th>Department</th>
+                                    <th>Hospital Name</th>
+                                    <th>Phone</th>
+                                    <th>Patient Name</th>
+                                    <th>Age</th>
+                                    <th>Patient Email</th>
+                                    <th>Slot</th>
+                                    <th>Appointment Status</th>
+                                    <th>Payment Status</th>
+                                    <th>Action</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <% doctors.forEach(doc => { %>
+                                    <% doc.appointments.forEach(app => { %>
+                                        <tr>
+                                            <td><%= doc._id.toString().slice(-3) %></td>
+                                            <td>Dr. <%= doc.name %></td>
+                                            <td><%= doc.department %></td>
+                                            <td><%= doc.hospitalName %></td>
+                                            <td><%= doc.phone %></td>
+                                            <td><%= app.name %></td>
+                                            <td><%= app.age %></td>
+                                            <td><%= app.email %></td>
+                                            <td>
+                                                <% if(app.slot){ %>
+                                                    <span class="text-success fw-bold"><%= app.slot %></span>
+                                                <% } else { %>
+                                                    <button class="btn btn-primary btn-sm"
+                                                            onclick="openAssignSlotModal('<%= app._id %>')">
+                                                        Assign Slot
+                                                    </button>
+                                                <% } %>
+                                            </td>
+                                            <td><%= app.appointmentStatus %></td>
+                                            <td><%= app.paymentStatus %></td>
+                                            <td class="action-buttons">
+                                                <button class="btn btn-primary btn-sm"
+                                                        onclick="openEditModal('<%= app._id %>', '<%= app.appointmentStatus %>', '<%= app.paymentStatus %>', '<%= app.cancelReason %>')">
+                                                    Edit
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    <% }) %>
+                                <% }) %>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+            </div> <!-- container-fluid -->
+        </div> <!-- content -->
+
+        <%- include('../layouts/footer.ejs') %>
+    </div> <!-- content-wrapper -->
+</div> <!-- wrapper -->
+
+<!-- ASSIGN SLOT MODAL -->
+<div id="assignSlotModal" class="modal-container">
+    <div class="modal-box">
+        <h5 class="mb-3">Assign Slot</h5>
+        <form id="assignSlotForm">
+            <input type="hidden" id="appointmentId">
+            <label><strong>Slot:</strong></label>
+            <input type="text" id="slot" class="form-control mb-3" placeholder="10:30 AM - 11:00 AM" required>
+            <div class="d-flex justify-content-between">
+                <button type="submit" class="btn btn-success btn-sm">Save</button>
+                <button type="button" class="btn btn-danger btn-sm closeModalBtn">Close</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- EDIT APPOINTMENT MODAL -->
+<div id="editAppointmentModal" class="modal-container">
+    <div class="modal-box">
+        <h5 class="mb-3">Edit Appointment</h5>
+        <form id="editAppointmentForm">
+            <input type="hidden" id="editAppointmentId">
+            <label><strong>Status:</strong></label>
+            <select id="editStatus" class="form-control mb-2" required>
+                <option value="booked">Booked</option>
+                <option value="completed">Completed</option>
+                <option value="cancelled">Cancelled</option>
+            </select>
+            <label><strong>Payment Status:</strong></label>
+            <select id="editPayment" class="form-control mb-2" required>
+                <option value="pending">Pending</option>
+                <option value="paid">Paid</option>
+                <option value="failed">Failed</option>
+            </select>
+            <label><strong>Cancel Reason:</strong></label>
+            <input type="text" id="editCancelReason" class="form-control mb-3" placeholder="Optional">
+            <div class="d-flex justify-content-between">
+                <button type="submit" class="btn btn-success btn-sm">Save</button>
+                <button type="button" class="btn btn-danger btn-sm closeEditModalBtn">Close</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- TOASTER -->
+<div id="toaster"></div>
+
+<!-- Scripts -->
+<script src="/vendor/jquery/jquery.min.js"></script>
+<script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="/vendor/jquery-easing/jquery.easing.min.js"></script>
+<script src="/vendor/datatables/jquery.dataTables.min.js"></script>
+<script src="/vendor/datatables/dataTables.bootstrap4.min.js"></script>
+<script src="/js/sb-admin-2.min.js"></script>
+
+<script>
+    // ------------------- TOASTER -------------------
+    function showToaster(msg, isError=false){
+        const t = document.getElementById('toaster');
+        t.innerText = msg;
+        t.className = isError ? 'error' : '';
+        t.style.display = 'block';
+        setTimeout(()=> t.style.display='none', 2500);
+    }
+
+    // ------------------- SLOT MODAL -------------------
+    function openAssignSlotModal(id){
+        document.getElementById('appointmentId').value = id;
+        document.getElementById('assignSlotModal').style.display = 'flex';
+    }
+    document.querySelectorAll('.closeModalBtn').forEach(btn=>{
+        btn.addEventListener('click',()=>document.getElementById('assignSlotModal').style.display='none');
+    });
+    document.getElementById('assignSlotForm').addEventListener('submit', async e=>{
+        e.preventDefault();
+        const id = document.getElementById('appointmentId').value;
+        const slot = document.getElementById('slot').value;
+        try{
+            const res = await fetch(`/api/appointments/assign-slot/${id}`,{
+                method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({slot})
+            });
+            const data = await res.json();
+            showToaster(data.message, !res.ok);
+            document.getElementById('assignSlotModal').style.display='none';
+            setTimeout(()=>location.reload(),1000);
+        }catch(err){
+            showToaster('Failed to assign slot', true);
+        }
+    });
+
+    // ------------------- EDIT MODAL -------------------
+    function openEditModal(id,status,payment,cancelReason){
+        document.getElementById('editAppointmentId').value=id;
+        document.getElementById('editStatus').value=status;
+        document.getElementById('editPayment').value=payment;
+        document.getElementById('editCancelReason').value=cancelReason||'';
+        document.getElementById('editAppointmentModal').style.display='flex';
+    }
+    document.querySelectorAll('.closeEditModalBtn').forEach(btn=>{
+        btn.addEventListener('click',()=>document.getElementById('editAppointmentModal').style.display='none');
+    });
+    document.getElementById('editAppointmentForm').addEventListener('submit', async e=>{
+        e.preventDefault();
+        const id=document.getElementById('editAppointmentId').value;
+        const appointmentStatus=document.getElementById('editStatus').value;
+        const paymentStatus=document.getElementById('editPayment').value;
+        const cancelReason=document.getElementById('editCancelReason').value;
+
+        try{
+            const res=await fetch(`/api/appointments/${id}`,{
+                method:'POST', headers:{'Content-Type':'application/json'},
+                body: JSON.stringify({appointmentStatus,paymentStatus,cancelReason})
+            });
+            const data=await res.json();
+            showToaster(data.message, !res.ok);
+            document.getElementById('editAppointmentModal').style.display='none';
+            setTimeout(()=>location.reload(),1000);
+        }catch(err){
+            showToaster('Failed to update appointment',true);
+        }
+    });
+
+    // ------------------- DATATABLE -------------------
+    $(document).ready(function () {
+        $('.doctorTable').DataTable();
+        setTimeout(()=>$('.alert').alert('close'),5000);
+    });
+</script>
+</body>
+</html>

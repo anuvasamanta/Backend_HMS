@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>
+        <%= title %>
+    </title>
+
+    <!-- Fonts & styles -->
+    <link href="/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Nunito:200,300,400,600,700,800,900" rel="stylesheet">
+    <link href="/css/sb-admin-2.min.css" rel="stylesheet">
+    <link href="/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+
+    <!-- Toastr CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet" />
+
+    <style>
+        .badge {
+            font-size: 0.85em;
+        }
+
+        .cancelled-row {
+            background-color: #f8d7da !important;
+        }
+    </style>
+</head>
+
+<body id="page-top">
+    <div id="wrapper">
+        <!-- Sidebar -->
+        <%- include('../layouts/doctorSidebar.ejs') %>
+
+            <!-- Content Wrapper -->
+            <div id="content-wrapper" class="d-flex flex-column">
+                <div id="content">
+                    <%- include('../layouts/navbar.ejs') %>
+
+                        <% if (success && success.length > 0) { %>
+                        <div class="alert alert-success"><%= success %></div>
+                        <% } %>
+
+                        <% if (error && error.length > 0) { %>
+                        <div class="alert alert-danger"><%= error %></div>
+                        <% } %>
+                        
+                        <!-- Main Page Content -->
+                        <div class="container-fluid">
+                            <h1 class="h3 mb-2 text-gray-800">My Appointments</h1>
+                            <p class="mb-4">View and manage your scheduled appointments.</p>
+
+                            <!-- Appointments Table Card -->
+                            <div class="card shadow mb-4">
+                                <div class="card-header py-3">
+                                    <h6 class="m-0 font-weight-bold text-primary">Appointments List</h6>
+                                </div>
+                                <div class="card-body">
+                                    <% if (appointments.length> 0) { %>
+                                        <div class="table-responsive">
+                                            <table class="table table-bordered" id="appointmentsTable" width="100%">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Patient Name</th>
+                                                        <th>Email</th>
+                                                        <th>Phone</th>
+                                                        <th>Slot</th>
+                                                        <th>Reason</th>
+                                                        <th>Appointment Status</th>
+                                                        <th>Payment Status</th>
+                                                        <th>Doctor Name</th>
+                                                        <th>Created At</th>
+                                                        <th>Action</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <% appointments.forEach(appt=> { %>
+                                                        <tr class="<%= appt.appointmentStatus === 'cancelled' ? 'cancelled-row' : '' %>"
+                                                            data-id="<%= appt._id %>">
+                                                            <td>
+                                                                <%= appt.patientInfo ? appt.patientInfo.name : appt.name
+                                                                    %>
+                                                            </td>
+                                                            <td>
+                                                                <%= appt.patientInfo ? appt.patientInfo.email :
+                                                                    appt.email %>
+                                                            </td>
+                                                            <td>
+                                                                <%= appt.patientInfo && appt.patientInfo.phone ?
+                                                                    appt.patientInfo.phone : 'N/A' %>
+                                                            </td>
+                                                            <td>
+                                                                <%= appt.slot || 'Not assigned' %>
+                                                            </td>
+                                                            <td>
+                                                                <%= appt.reason || '-' %>
+                                                            </td>
+                                                            <td>
+                                                                <span
+                                                                    class="badge <%= appt.appointmentStatus === 'booked' ? 'badge-primary' : appt.appointmentStatus === 'completed' ? 'badge-success' : 'badge-danger' %>">
+                                                                    <%= appt.appointmentStatus %>
+                                                                </span>
+                                                            </td>
+                                                            <td>
+                                                                <span
+                                                                    class="badge <%= appt.paymentStatus === 'paid' ? 'badge-success' : 'badge-warning' %>">
+                                                                    <%= appt.paymentStatus %>
+                                                                </span>
+                                                            </td>
+                                                            <td>
+                                                                <%= appt.doctorInfo ? appt.doctorInfo.name : 'N/A' %>
+                                                            </td>
+                                                            <td>
+                                                                <%= new Date(appt.createdAt).toLocaleString() %>
+                                                            </td>
+                                                          <td>
+    <% if (appt.appointmentStatus == 'booked') { %>
+        <!-- Booked State - Show action buttons -->
+        <div class="d-flex gap-2">
+            <button class="btn btn-danger btn-sm cancel-btn"
+                    data-id="<%= appt._id %>">
+                <i class="fas fa-times me-1"></i> Cancel
+            </button>
+            <a href="/doctor/prescription/<%= appt._id %>"
+               class="btn btn-primary btn-sm">
+                <i class="fas fa-file-prescription me-1"></i> Create Rx
+            </a>
+        </div>
+        
+    <% } else if (appt.appointmentStatus == 'completed') { %>
+        <!-- Completed State -->
+        <div class="d-flex align-items-center gap-2">
+            <span class="badge bg-success">
+                <i class="fas fa-check-circle me-1"></i> Completed
+            </span>
+            <% if (appt.prescription && appt.prescription.fileUrl) { %>
+                <a href="/doctor/prescription/view/<%= appt._id %>" 
+                   class="btn btn-outline-info btn-sm"
+                   title="View Prescription">
+                    <i class="fas fa-eye"></i>
+                </a>
+            <% } %>
+        </div>
+        
+    <% } else if (appt.appointmentStatus == 'cancelled') { %>
+        <!-- Cancelled State -->
+        <span class="badge bg-danger">
+            <i class="fas fa-times-circle me-1"></i> Cancelled
+        </span>
+        
+    <% } else { %>
+        <!-- Other statuses -->
+        <span class="badge bg-secondary">
+            <%= appt.appointmentStatus %>
+        </span>
+    <% } %>
+</td>
+                                                        </tr>
+                                                        <% }) %>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                        <% } else { %>
+                                            <p>No appointments found.</p>
+                                            <% } %>
+                                </div>
+                            </div>
+                        </div>
+                </div>
+
+                <!-- Cancel Modal -->
+                <div class="modal fade" id="cancelModal" tabindex="-1" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <form id="cancelForm">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title">Cancel Appointment</h5>
+                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                </div>
+                                <div class="modal-body">
+                                    <input type="hidden" id="appointmentId" />
+                                    <p>Cancel appointment for <strong id="patientName"></strong>?</p>
+                                    <div class="form-group">
+                                        <label for="cancelReason">Reason (optional):</label>
+                                        <textarea class="form-control" id="cancelReason" rows="3"></textarea>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                    <button type="submit" class="btn btn-danger">Cancel Appointment</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <%- include('../layouts/footer.ejs') %>
+            </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="/vendor/jquery/jquery.min.js"></script>
+    <script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="/vendor/jquery-easing/jquery.easing.min.js"></script>
+    <script src="/js/sb-admin-2.min.js"></script>
+    <script src="/vendor/datatables/jquery.dataTables.min.js"></script>
+    <script src="/vendor/datatables/dataTables.bootstrap4.min.js"></script>
+
+    <!-- Toastr JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            $('#appointmentsTable').DataTable({ "order": [[8, "desc"]] });
+
+            // Open cancel modal
+            $('.cancel-btn').click(function () {
+                const appointmentId = $(this).data('id');
+                const patientName = $(this).data('patient');
+
+                $('#appointmentId').val(appointmentId);
+                $('#patientName').text(patientName);
+                $('#cancelReason').val('');
+                $('#cancelModal').modal('show');
+            });
+
+            // Submit cancellation
+            $('#cancelForm').submit(function (e) {
+                e.preventDefault();
+                const appointmentId = $('#appointmentId').val();
+                const cancelReason = $('#cancelReason').val();
+
+                $.ajax({
+                    url: `/api/appointments/cancel/${appointmentId}`,
+                    method: 'POST',
+                    data: { cancelReason },
+                    success: function (res) {
+                        $('#cancelModal').modal('hide');
+
+                        // Update row
+                        const row = $(`tr[data-id='${appointmentId}']`);
+                        row.addClass('cancelled-row');
+                        row.find('td:last').html('<span class="text-danger">Cancelled</span>');
+                        row.find('td:nth-child(6) .badge')
+                            .removeClass('badge-primary badge-success')
+                            .addClass('badge-danger')
+                            .text('cancelled');
+
+                        // Toastr success
+                        toastr.success(res.message, 'Success', { timeOut: 3000 });
+                    },
+                    error: function (err) {
+                        toastr.error(err.responseJSON ? err.responseJSON.message : 'Something went wrong', 'Error', { timeOut: 3000 });
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+
+</html>

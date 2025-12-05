@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <title>
+        <%= title %>
+    </title>
+
+    <!-- Custom fonts for this template -->
+    <link href="/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Nunito:200,300,400,600,700,900" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="/css/sb-admin-2.min.css" rel="stylesheet">
+</head>
+
+<body id="page-top">
+
+    <!-- Page Wrapper -->
+    <div id="wrapper">
+
+        <!-- Sidebar -->
+        <%- include('../layouts/sidebar.ejs') %>
+            <!-- End Sidebar -->
+
+            <!-- Content Wrapper -->
+            <div id="content-wrapper" class="d-flex flex-column">
+
+                <!-- Main Content -->
+                <div id="content">
+
+                    <!-- Topbar -->
+                    <%- include('../layouts/navbar.ejs') %>
+                        <!-- End Topbar -->
+
+                        <!-- Begin Page Content -->
+                        <div class="container-fluid">
+
+                            <!-- Page Heading -->
+                            <h1 class="h3 mb-4 text-gray-800">Assign Shift & Department</h1>
+
+                            <!-- Card Start -->
+                            <div class="card shadow mb-4">
+                                <div class="card-header py-3">
+                                    <h6 class="m-0 font-weight-bold text-primary">
+                                        Update Staff Shift & Department
+                                    </h6>
+                                </div>
+
+                                <div class="card-body">
+
+                                    <% if (success && success.length> 0) { %>
+                                        <div class="alert alert-success">
+                                            <%= success %>
+                                        </div>
+                                        <% } %>
+
+                                            <% if (error && error.length> 0) { %>
+                                                <div class="alert alert-danger">
+                                                    <%= error %>
+                                                </div>
+                                                <% } %>
+
+                                                    <!-- ================= FORM ================= -->
+                                                    <form action="/admin/assign/shifting/<%= user._id %>"
+                                                        method="POST">
+
+                                                        <div class="form-group">
+                                                            <label>Staff Name</label>
+                                                            <input type="text" class="form-control"
+                                                                value="<%= user.name %>" readonly>
+                                                        </div>
+
+                                                        <div class="form-group">
+                                                            <label>Current Role</label>
+                                                            <input type="text" class="form-control"
+                                                                value="<%= user.role %>" readonly>
+                                                        </div>
+
+                                                        <div class="form-group">
+                                                            <label>Department</label>
+                                                            <input type="text" class="form-control" name="department"
+                                                                value="<%= user.department %>">
+                                                        </div>
+
+                                                        <div class="form-group">
+                                                            <label>Select Shift</label>
+                                                            <select name="shifting" class="form-control" required>
+                                                                <option value="" disabled selected>Select Shift</option>
+
+                                                                <option value="Morning Shift (6 AM - 2 PM)"
+                                                                    <%=user.shifting==="Morning Shift (6 AM - 2 PM)"
+                                                                    ? "selected" : "" %>>
+                                                                    Morning Shift (6 AM - 2 PM)
+                                                                </option>
+
+                                                                <option value="Evening Shift (2 PM - 10 PM)"
+                                                                    <%=user.shifting==="Evening Shift (2 PM - 10 PM)"
+                                                                    ? "selected" : "" %>>
+                                                                    Evening Shift (2 PM - 10 PM)
+                                                                </option>
+
+                                                                <option value="Night Shift (10 PM - 6 AM)"
+                                                                    <%=user.shifting==="Night Shift (10 PM - 6 AM)"
+                                                                    ? "selected" : "" %>>
+                                                                    Night Shift (10 PM - 6 AM)
+                                                                </option>
+                                                            </select>
+                                                        </div>
+
+                                                        <button type="submit" class="btn btn-primary btn-block">
+                                                            Update Shift & Department
+                                                        </button>
+
+                                                        <a href="/admin/list-staff" class="btn btn-secondary btn-block">
+                                                            Back to Staff List
+                                                        </a>
+
+                                                    </form>
+                                                    <!-- ================= FORM END ================= -->
+
+                                </div>
+                            </div>
+                            <!-- Card End -->
+
+                        </div>
+                        <!-- End Page Content -->
+
+                </div>
+                <!-- End Main Content -->
+
+                <!-- Footer -->
+                <%- include('../layouts/footer.ejs') %>
+                    <!-- End Footer -->
+
+            </div>
+            <!-- End Content Wrapper -->
+
+    </div>
+    <!-- End Page Wrapper -->
+
+    <!-- Scripts -->
+    <script src="/vendor/jquery/jquery.min.js"></script>
+    <script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="/vendor/jquery-easing/jquery.easing.min.js"></script>
+    <script src="/js/sb-admin-2.min.js"></script>
+
+</body>
+
+</html>

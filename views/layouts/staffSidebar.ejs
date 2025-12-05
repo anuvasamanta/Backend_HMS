@@ -1,0 +1,86 @@
+<!-- Sidebar -->
+<ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+
+    <!-- Sidebar - Brand -->
+    <a class="sidebar-brand d-flex align-items-center justify-content-center" href="/staff/dashboard">
+        <div class="sidebar-brand-icon rotate-n-15">
+            <i class="fas fa-laugh-wink"></i>
+        </div>
+        <div class="sidebar-brand-text mx-3">SB Staff </div>
+    </a>
+
+    <!-- Divider -->
+    <hr class="sidebar-divider my-0">
+
+    <!-- Nav Item - Dashboard -->
+    <li class="nav-item active">
+        <a class="nav-link" href="/staff/dashboard">
+            <i class="fas fa-fw fa-tachometer-alt"></i>
+            <span>Dashboard</span></a>
+    </li>
+
+    <!-- Divider -->
+    <hr class="sidebar-divider">
+
+
+    <!-- Nav Item - Utilities Collapse Menu -->
+    <li class="nav-item">
+        <a class="nav-link" href="/staff/patients">
+            <i class="fas fa-fw fa-chart-area"></i>
+            <span>Assist Users</span>
+        </a>
+
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="/staff/attendances">
+            <i class="fas fa-fw fa-chart-area"></i>
+            <span>Attendence </span></a>
+    </li>
+    <!-- Divider -->
+    <hr class="sidebar-divider">
+
+    <!-- Heading -->
+    <div class="sidebar-heading">
+        Addons
+    </div>
+    <!-- Nav Item - Charts -->
+    <li class="nav-item">
+        <a class="nav-link" href="/staff/view/appointments">
+            <i class="fas fa-fw fa-chart-area"></i>
+            <span>Appointments</span></a>
+    </li>
+
+      <li class="nav-item">
+        <a class="nav-link" href="/staff/doctor-feedback">
+            <i class="fas fa-fw fa-chart-area"></i>
+            <span>Feed Back </span></a>
+    </li>
+
+    <!-- Nav Item - Tables -->
+    <li class="nav-item">
+        <a class="nav-link" href="/auth/staff/profile">
+            <i class="fas fa-fw fa-table"></i>
+            <span>Profile</span></a>
+    </li>
+
+    <!-- Divider -->
+    <hr class="sidebar-divider d-none d-md-block">
+
+    <div class="px-3 py-3 text-center">
+        <% if (user) { %>
+            <div class="font-weight-bold" style="font-size: 16px; color: #ffffff;">
+                <%= user.name %>
+            </div>
+            <div style="font-size: 13px; text-transform: capitalize; color: #e0e0e0;">
+                <%= user.role %>
+            </div>
+            <% } else { %>
+                <div class="font-weight-bold" style="font-size: 16px; color: #ffffff;">
+                    Guest
+                </div>
+                <% } %>
+    </div>
+
+
+</ul>
+<!-- End of Sidebar -->

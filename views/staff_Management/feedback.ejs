@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title><%= title %></title>
+
+    <!-- Custom fonts & styles -->
+    <link href="/vendor/fontawesome-free/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Nunito:200,300,400,600,700,800,900" rel="stylesheet">
+    <link href="/css/sb-admin-2.min.css" rel="stylesheet">
+    <link href="/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+
+    <style>
+        .action-buttons { white-space: nowrap; }
+        .action-buttons .btn { margin: 2px; }
+    </style>
+</head>
+
+<body id="page-top">
+
+    <!-- Page Wrapper -->
+    <div id="wrapper">
+
+        <!-- Sidebar -->
+        <%- include('../layouts/staffSidebar.ejs') %>
+
+        <!-- Content Wrapper -->
+        <div id="content-wrapper" class="d-flex flex-column">
+            <div id="content">
+                <!-- Topbar -->
+                <%- include('../layouts/navbar.ejs') %>
+
+                <!-- Main Content -->
+                <div class="container-fluid">
+
+                    <h1 class="h3 mb-2 text-gray-800">Doctor Feedback Management</h1>
+                    <p class="mb-4">View feedback from patients for all doctors in the system.</p>
+
+                    <div class="card shadow mb-4">
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-bordered" id="feedbackTable" width="100%" cellspacing="0">
+                                    <thead>
+                                        <tr>
+                                            <th>_ID</th>
+                                            <th>Doctor Name</th>
+                                            <th>Specialization</th>
+                                            <th>Total Feedbacks</th>
+                                            <th>Latest Feedback</th>
+                                            <th>Latest Rating</th>
+                                            <th>Latest Feedback Date</th>
+                                            <th>Avg Rating</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <% if (feedbackSummary && feedbackSummary.length > 0) { %>
+                                            <% feedbackSummary.forEach(function(hosp) { %>
+                                                <tr>
+                                                    <td><%= hosp._id.toString().slice(-3) %></td>
+                                                    <td><%= hosp.doctorName || 'N/A' %></td>
+                                                    <td><%= hosp.specialization || 'N/A' %></td>
+                                                    <td><%= hosp.totalFeedbacks || 'N/A' %></td>
+                                                    <td><%= hosp.latestFeedback || 'N/A' %></td>
+                                                    <td><%= hosp.latestRating || 'N/A' %></td>
+                                                    <td>
+                                                        <%= hosp.latestFeedbackDate ? new Date(hosp.latestFeedbackDate)
+                                                        .toLocaleString('en-IN',{ dateStyle: "medium", timeStyle: "short" }) : 'N/A' %>
+                                                    </td>
+                                                    <td><%= hosp.avgRating ? hosp.avgRating.toFixed(1) : 'N/A' %></td>
+                                                    <td class="action-buttons">
+                                                        <a href="javascript:void(0)" class="btn btn-info btn-sm"
+                                                            onclick="openDoctorFeedbackModal('<%= hosp._id %>')">
+                                                            <i class="fas fa-eye"></i>
+                                                        </a>
+                                                    </td>
+                                                </tr>
+                                            <% }) %>
+                                        <% } else { %>
+                                            <tr>
+                                                <td colspan="9" class="text-center">No doctors found</td>
+                                            </tr>
+                                        <% } %>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- /.container-fluid -->
+
+            </div>
+            <!-- End of Content -->
+
+            <!-- Footer -->
+            <%- include('../layouts/footer.ejs') %>
+        </div>
+        <!-- End of Content Wrapper -->
+
+    </div>
+    <!-- End of Page Wrapper -->
+
+    <!-- Doctor Feedback Modal -->
+    <div class="modal fade" id="hospitalDetailsModal" tabindex="-1">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Doctor Feedback</h5>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body" id="hospitalModalContent">
+                    <div class="text-center">
+                        <div class="spinner-border"></div>
+                        <p>Loading feedback...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scroll to Top -->
+    <a class="scroll-to-top rounded" href="#page-top"><i class="fas fa-angle-up"></i></a>
+
+    <%- include('../layouts/modal.ejs') %>
+
+    <!-- Scripts -->
+    <script src="/vendor/jquery/jquery.min.js"></script>
+    <script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="/vendor/jquery-easing/jquery.easing.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>
+    <script src="/js/sb-admin-2.min.js"></script>
+    <script src="/vendor/datatables/jquery.dataTables.min.js"></script>
+    <script src="/vendor/datatables/dataTables.bootstrap4.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            $('#feedbackTable').DataTable({
+                pageLength: 10,
+                lengthMenu: [5, 10, 25, 50, 100],
+                ordering: true,
+                searching: true,
+                info: true,
+                responsive: true
+            });
+        });
+
+        function openDoctorFeedbackModal(doctorId) {
+            $("#hospitalModalContent").html(`
+                <div class='text-center'>
+                    <div class='spinner-border'></div>
+                    <p>Loading feedback...</p>
+                </div>
+            `);
+
+            $("#hospitalDetailsModal").modal("show");
+
+            $.ajax({
+                url: `/staff/doctor-feedback/${doctorId}`,
+                type: "GET",
+                success: function (response) {
+                    $("#hospitalModalContent").html(response);
+                },
+                error: function () {
+                    $("#hospitalModalContent").html(`
+                        <p class="text-danger text-center">Failed to load feedback.</p>
+                    `);
+                }
+            });
+        }
+    </script>
+
+</body>
+</html>

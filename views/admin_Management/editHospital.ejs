@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>
+        <%=title%>
+    </title>
+
+    <!-- Custom fonts for this template-->
+    <link href="/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    <link
+        href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+        rel="stylesheet">
+
+    <!-- Custom styles for this template-->
+    <link href="/css/sb-admin-2.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/css/form.css">
+</head>
+
+<body id="page-top">
+
+    <!-- Page Wrapper -->
+    <div id="wrapper">
+
+        <!-- Sidebar -->
+        <%- include('../layouts/sidebar.ejs')%>
+            <!-- End of Sidebar -->
+
+            <!-- Content Wrapper -->
+            <div id="content-wrapper" class="d-flex flex-column">
+
+                <!-- Main Content -->
+                <div id="content">
+
+                    <!-- top bar -->
+                    <%- include('../layouts/navbar.ejs')%>
+                        <!-- top bar end -->
+
+                        <% if (success && success.length> 0) { %>
+                            <div class="alert alert-success">
+                                <%= success %>
+                            </div>
+                            <% } %>
+
+                                <% if (error && error.length> 0) { %>
+                                    <div class="alert alert-danger">
+                                        <%= error %>
+                                    </div>
+                                    <% } %>
+                                        <!-- Begin Page Content -->
+                                        <div class="container-fluid">
+                                            <!-- Content Row -->
+                                            <div class="row">
+                                                <div class="col-12">
+                                                    <div class="content">
+                                                        <div class="container form-container">
+                                                            <h2 class="form-title">Hospital Information Form</h2>
+                                                            <form action="/admin/update/hospital/<%=hospital._id%>" method="post"
+                                                                enctype="multipart/form-data">
+                                                                <!-- Basic Information Section -->
+                                                                <h4 class="section-title">Edit Information</h4>
+                                                                <div class="mb-4">
+                                                                    <div class="row">
+                                                                        <div class="col-12 col-md-6 col-lg-3 mb-3">
+                                                                            <label for="hospitalName"
+                                                                                class="form-label required-field">Hospital
+                                                                                Name</label>
+                                                                            <input type="text" class="form-control"
+                                                                                id="hospitalName" name="hospitalName"
+                                                                                required
+                                                                                placeholder="Enter hospital name"
+                                                                                value="<%= hospital.hospitalName %>">
+                                                                        </div>
+                                                                        <div class="col-12 col-md-6 col-lg-3 mb-3">
+                                                                            <label for="contactEmail"
+                                                                                class="form-label required-field">Contact
+                                                                                Email</label>
+                                                                            <input type="email" class="form-control"
+                                                                                id="contactEmail" name="contactEmail"
+                                                                                required
+                                                                                placeholder="Enter contact email"
+                                                                                value="<%= hospital.contactEmail %>">
+                                                                        </div>
+                                                                        <div class="col-12 col-md-6 col-lg-3 mb-3">
+                                                                            <label for="contactPhone"
+                                                                                class="form-label required-field">Contact
+                                                                                Phone</label>
+                                                                            <input type="tel" class="form-control"
+                                                                                id="contactPhone" name="contactPhone"
+                                                                                required
+                                                                                placeholder="Enter contact phone"
+                                                                                value="<%= hospital.contactPhone %>">
+                                                                        </div>
+                                                                        <div class="col-12 col-md-6 col-lg-3 mb-3">
+                                                                            <label for="image"
+                                                                                class="form-label">Hospital
+                                                                                Image</label>
+                                                                            <input type="file" class="form-control"
+                                                                                id="image" name="image"
+                                                                                accept="image/*">
+                                                                            <% if (hospital.image) { %>
+                                                                                <div class="mt-2">
+                                                                                    <p class="mb-1">Current Image:</p>
+                                                                                    <img src="<%= hospital.image %>"
+                                                                                        alt="Current Hospital Image"
+                                                                                        class="current-image"
+                                                                                        style="width: 200px; height: 150px; object-fit: cover; border-radius: 8px; border: 2px solid #dee2e6;">
+                                                                                </div>
+                                                                                <% } %>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="row">
+                                                                        <div class="col-12 mb-3">
+                                                                            <label for="address"
+                                                                                class="form-label required-field">Location</label>
+                                                                            <textarea class="form-control" id="address"
+                                                                                name="address" rows="3" required
+                                                                                placeholder="Enter hospital address"><%= hospital.address %></textarea>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+
+                                                                <hr>
+
+                                                                <!-- Working Hours Section -->
+                                                                <h4 class="section-title">Working Hours</h4>
+                                                                <div class="mb-4">
+                                                                    <div class="row">
+                                                                        <div class="col-12 col-md-6 col-lg-3 mb-3">
+                                                                            <label for="openingTime"
+                                                                                class="form-label required-field">Opening
+                                                                                Time</label>
+                                                                            <input type="time" class="form-control"
+                                                                                id="openingTime"
+                                                                                name="workingHours[openingTime]"
+                                                                                required
+                                                                                value="<%= hospital.workingHours.openingTime %>">
+                                                                        </div>
+                                                                        <div class="col-12 col-md-6 col-lg-3 mb-3">
+                                                                            <label for="closingTime"
+                                                                                class="form-label required-field">Closing
+                                                                                Time</label>
+                                                                            <input type="time" class="form-control"
+                                                                                id="closingTime"
+                                                                                name="workingHours[closingTime]"
+                                                                                required
+                                                                                value="<%= hospital.workingHours.closingTime %>">
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+
+                                                                <hr>
+
+                                                                <!-- Appointment Rules Section -->
+                                                                <h4 class="section-title">Appointment Rules</h4>
+                                                                <div class="mb-4">
+                                                                    <div class="row">
+                                                                        <div class="col-12 col-md-6 col-lg-3 mb-3">
+                                                                            <label for="maxAppointmentsPerDay"
+                                                                                class="form-label">Max Appointments Per
+                                                                                Day</label>
+                                                                            <input type="number" class="form-control"
+                                                                                id="maxAppointmentsPerDay"
+                                                                                name="appointmentRules[maxAppointmentsPerDay]"
+                                                                                value="<%= hospital.appointmentRules.maxAppointmentsPerDay %>"
+                                                                                min="1">
+                                                                        </div>
+                                                                        <div
+                                                                            class="col-12 col-md-6 col-lg-3 mb-3 d-flex align-items-end">
+                                                                            <div class="form-check form-switch">
+                                                                                <input class="form-check-input"
+                                                                                    type="checkbox"
+                                                                                    id="allowOnlineBooking"
+                                                                                    name="appointmentRules[allowOnlineBooking]"
+                                                                                    value="true"
+                                                                                    <%=hospital.appointmentRules.allowOnlineBooking
+                                                                                    ? 'checked' : '' %>>
+                                                                                <label class="form-check-label"
+                                                                                    for="allowOnlineBooking">
+                                                                                    Allow Online Booking
+                                                                                </label>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+
+                                                                <hr>
+
+                                                                <!-- Emergency Settings Section -->
+                                                                <h4 class="section-title">Emergency Settings</h4>
+                                                                <div class="mb-4">
+                                                                    <div class="row">
+                                                                        <div
+                                                                            class="col-12 col-md-6 col-lg-3 mb-3 d-flex align-items-end">
+                                                                            <div class="form-check form-switch">
+                                                                                <input class="form-check-input"
+                                                                                    type="checkbox"
+                                                                                    id="ambulanceService"
+                                                                                    name="emergencySettings[ambulanceService]"
+                                                                                    value="true"
+                                                                                    <%=hospital.emergencySettings.ambulanceService
+                                                                                    ? 'checked' : '' %>>
+                                                                                <label class="form-check-label"
+                                                                                    for="ambulanceService">
+                                                                                    Ambulance Service Available
+                                                                                </label>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="col-12 col-md-6 col-lg-3 mb-3">
+                                                                            <label for="emergencyContact"
+                                                                                class="form-label">Emergency
+                                                                                Contact</label>
+                                                                            <input type="tel" class="form-control"
+                                                                                id="emergencyContact"
+                                                                                name="emergencySettings[emergencyContact]"
+                                                                                placeholder="Enter emergency contact"
+                                                                                value="<%= hospital.emergencySettings.emergencyContact %>">
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <hr>
+
+                                                                <button type="submit"
+                                                                    class="btn btn-primary btn-submit">
+                                                                    <i class="fas fa-hospital me-2"></i>Edit Hospital
+                                                                    Information
+                                                                </button>
+                                                            </form>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- /.container-fluid -->
+                </div>
+                <!-- End of Main Content -->
+
+                <!-- Footer -->
+                <%- include('../layouts/footer.ejs')%>
+                    <!-- End of Footer -->
+
+            </div>
+            <!-- End of Content Wrapper -->
+
+    </div>
+    <!-- End of Page Wrapper -->
+
+    <!-- Scroll to Top Button-->
+    <a class="scroll-to-top rounded" href="#page-top">
+        <i class="fas fa-angle-up"></i>
+    </a>
+
+    <!-- Logout Modal-->
+    <%- include('../layouts/modal.ejs') %>
+
+        <!-- Bootstrap core JavaScript-->
+        <script src="/vendor/jquery/jquery.min.js"></script>
+        <script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+        <!-- Core plugin JavaScript-->
+        <script src="/vendor/jquery-easing/jquery.easing.min.js"></script>
+
+        <!-- Custom scripts for all pages-->
+        <script src="/js/sb-admin-2.min.js"></script>
+
+        <!-- Page level plugins -->
+        <script src="/vendor/chart.js/Chart.min.js"></script>
+
+        <!-- Page level custom scripts -->
+        <script src="/js/demo/chart-area-demo.js"></script>
+        <script src="/js/demo/chart-pie-demo.js"></script>
+
+</body>
+
+</html>

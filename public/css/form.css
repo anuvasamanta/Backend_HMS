@@ -1,0 +1,63 @@
+.required-field::after {
+  content: " *";
+  color: red;
+}
+
+.section-title {
+  border-bottom: 2px solid #0d6efd;
+  padding-bottom: 10px;
+  margin-bottom: 20px;
+  color: #0d6efd;
+}
+
+.form-container {
+  background-color: #f8f9fa;
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+  margin-top: 20px;
+}
+
+.form-title {
+  color: #0d6efd;
+  margin-bottom: 30px;
+  text-align: center;
+}
+
+.btn-submit {
+  width: 100%;
+  padding: 12px;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.form-label {
+  font-weight: 600;
+}
+
+/* Custom media queries for responsive design */
+@media (max-width: 575.98px) {
+  .form-container {
+    padding: 15px;
+  }
+
+  .time-input-group {
+    flex-direction: column;
+  }
+
+  .time-input-group span {
+    margin: 10px 0;
+  }
+}
+
+@media (min-width: 576px) and (max-width: 767.98px) {
+  .form-container {
+    padding: 20px;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 991.98px) {
+  .form-container {
+    padding: 25px;
+  }
+}

@@ -1,0 +1,77 @@
+ <!-- <nav class="navbar navbar-expand-lg navbar-custom fixed-top">
+        <div class="container">
+            <a class="navbar-brand d-flex align-items-center" href="/">
+                <img src="/uploads/apollo-logo-white.svg" alt="Apollo Hospitals" height="40" class="me-2">
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarScroll">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarScroll">
+                <ul class="navbar-nav ms-auto align-items-center">
+                    <li class="nav-item">
+                        <a class="nav-link text-white fw-semibold mx-2" href="#discover">Discover Apollo</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-white fw-semibold mx-2" href="#find">Find Hospital</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-white fw-semibold mx-2" href="#services">Medical Services</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-white fw-semibold mx-2" href="#library">Health Library</a>
+                    </li>
+                    <li class="nav-item ms-3">
+                        <div class="d-flex">
+                            <a href="/login" class="btn btn-outline-light me-2 px-4" style="border-radius: 25px; border: 2px solid white; font-weight: 600;">
+                                Login
+                            </a>
+                            <a href="/register" class="btn btn-light px-4" style="border-radius: 25px; background: white; color: #0053a6; font-weight: 600; border: 2px solid white;">
+                                Register
+                            </a>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav> -->
+
+<!-- Topbar -->
+<nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
+
+    <!-- Sidebar Toggle (Topbar) -->
+    <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
+        <i class="fa fa-bars"></i>
+    </button>
+
+    <!-- Topbar Navbar -->
+    <ul class="navbar-nav ml-auto">
+
+        <!-- Nav Item - User Information -->
+        <li class="nav-item dropdown no-arrow">
+            <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
+               data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+
+                <span class="mr-2 d-none d-lg-inline text-gray-600 small">
+                    <% if (user) { %>
+                        <%= user.name %> (<%= user.role %>)
+                    <% } else { %>
+                        Guest
+                    <% } %>
+                </span>
+
+                <img class="img-profile rounded-circle" src="/img/undraw_profile.svg">
+            </a>
+
+            <!-- Dropdown - User Information -->
+            <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
+                 aria-labelledby="userDropdown">
+                <div class="dropdown-divider"></div>
+            </div>
+        </li>
+
+    </ul>
+
+</nav>
+
+
+<!-- End of Topbar -->

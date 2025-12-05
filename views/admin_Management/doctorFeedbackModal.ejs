@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Feedback</title>
+</head>
+<body>
+    <div class="modal fade" id="doctorFeedbackModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog modal-xl">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Doctor Feedback</h5>
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+      </div>
+      <div class="modal-body">
+        <% if (feedbackList && feedbackList.length > 0) { %>
+          <table class="table table-bordered" id="doctorFeedbackTable">
+            <thead>
+              <tr>
+                <th>Patient Name</th>
+                <th>Patient Email</th>
+                <th>Rating</th>
+                <th>Feedback</th>
+                <th>Date</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% feedbackList.forEach(fb => { %>
+                <tr>
+                  <td><%= fb.patientName %></td>
+                  <td><%= fb.patientEmail %></td>
+                  <td><%= fb.rating %></td>
+                  <td><%= fb.feedback || 'N/A' %></td>
+                  <td><%= fb.feedbackDate ? new Date(fb.feedbackDate).toLocaleString('en-IN',{ dateStyle:"medium", timeStyle:"short"}) : 'N/A' %></td>
+                </tr>
+              <% }) %>
+            </tbody>
+          </table>
+        <% } else { %>
+          <p class="text-center">No feedback available.</p>
+        <% } %>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+$(document).ready(function() {
+  $('#doctorFeedbackTable').DataTable({ pageLength: 5, lengthMenu:[5,10,25], responsive:true });
+});
+</script>
+
+</body>
+</html>

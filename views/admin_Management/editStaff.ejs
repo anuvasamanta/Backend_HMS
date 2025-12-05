@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>
+        <%=title%>
+    </title>
+
+    <!-- Custom fonts for this template-->
+    <link href="/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    <link
+        href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+        rel="stylesheet">
+
+    <!-- Custom styles for this template-->
+    <link href="/css/sb-admin-2.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/css/form.css">
+</head>
+
+<body id="page-top">
+
+    <!-- Page Wrapper -->
+    <div id="wrapper">
+
+        <!-- Sidebar -->
+        <%- include('../layouts/sidebar.ejs')%>
+            <!-- End of Sidebar -->
+
+            <!-- Content Wrapper -->
+            <div id="content-wrapper" class="d-flex flex-column">
+
+                <!-- Main Content -->
+                <div id="content">
+
+                    <!-- top bar -->
+                    <%- include('../layouts/navbar.ejs')%>
+                        <!-- top bar end -->
+
+                        <!-- Flash Messages -->
+                        <% if (success && success.length> 0) { %>
+                            <div class="alert alert-success alert-dismissible fade show m-3" role="alert">
+                                <%= success %>
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <% } %>
+
+                                <% if (error && error.length> 0) { %>
+                                    <div class="alert alert-danger alert-dismissible fade show m-3" role="alert">
+                                        <%= error %>
+                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <% } %>
+
+                                        <!-- Begin Page Content -->
+                                        <div class="container-fluid">
+                                            <!-- Content Row -->
+                                            <div class="row">
+                                                <div class="col-12">
+                                                    <div class="content">
+                                                        <div class="container form-container">
+                                                            <h2 class="form-title">Edit Staff Information</h2>
+                                                            <form action="/admin/update-staff/<%=staff._id%>" method="post">
+                                                                <!-- Basic Information Section -->
+                                                                <h4 class="section-title">Personal Information</h4>
+                                                                <div class="mb-4">
+                                                                    <div class="row">
+                                                                        <div class="col-12 col-md-6 col-lg-4 mb-3">
+                                                                            <label for="name" class="form-label required-field">Full Name</label>
+                                                                            <input type="text" class="form-control" id="name" name="name" required
+                                                                                placeholder="Enter staff full name" value="<%= staff.name %>">
+                                                                        </div>
+                                                                        <div class="col-12 col-md-6 col-lg-4 mb-3">
+                                                                            <label for="email" class="form-label required-field">Email Address</label>
+                                                                            <input type="email" class="form-control" id="email" name="email" required
+                                                                                placeholder="Enter email address" value="<%= staff.email %>">
+                                                                        </div>
+                                                                        <div class="col-12 col-md-6 col-lg-4 mb-3">
+                                                                            <label for="phone" class="form-label required-field">Phone Number</label>
+                                                                            <input type="tel" class="form-control" id="phone" name="phone" required
+                                                                                placeholder="Enter phone number" value="<%= staff.phone %>">
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+
+                                                                <hr>
+
+                                                                <!-- Role and Department Section -->
+                                                                <h4 class="section-title">Professional Information</h4>
+                                                                <div class="mb-4">
+                                                                    <div class="row">
+                                                                        <div class="col-12 col-md-6 col-lg-3 mb-3">
+                                                                            <label for="role" class="form-label required-field">Role</label>
+                                                                            <select class="form-control" id="role" name="role" required>
+                                                                                <option value="">Select Role</option>
+                                                                                <option value="doctor" <%= staff.role === 'doctor' ? 'selected' : '' %>>Doctor</option>
+                                                                                <option value="nurse" <%= staff.role === 'nurse' ? 'selected' : '' %>>Nurse</option>
+                                                                                <option value="staff" <%= staff.role === 'staff' ? 'selected' : '' %>>Staff</option>
+                                                                            </select>
+                                                                        </div>
+                                                                        <div class="col-12 col-md-6 col-lg-3 mb-3">
+                                                                            <label for="department" class="form-label">Department</label>
+                                                                            <input type="text" class="form-control" id="department" name="department"
+                                                                                placeholder="Enter department" value="<%= staff.department || '' %>">
+                                                                        </div>
+                                                                        <div class="col-12 col-md-6 col-lg-3 mb-3">
+                                                                            <label for="specialization" class="form-label">Specialization</label>
+                                                                            <input type="text" class="form-control" id="specialization" name="specialization"
+                                                                                placeholder="Enter specialization" value="<%= staff.specialization || '' %>">
+                                                                        </div>
+                                                                        <div class="col-12 col-md-6 col-lg-3 mb-3">
+                                                                            <label for="shifting" class="form-label">Shift Timing</label>
+                                                                            <select class="form-control" id="shifting" name="shifting">
+                                                                                <option value="">Select Shift</option>
+                                                                                <option value="Morning Shift (8 AM - 4 PM)" <%= staff.shifting === 'Morning Shift (8 AM - 4 PM)' ? 'selected' : '' %>>Morning Shift (8 AM - 4 PM)</option>
+                                                                                <option value="Evening Shift (2 PM - 10 PM)" <%= staff.shifting === 'Evening Shift (2 PM - 10 PM)' ? 'selected' : '' %>>Evening Shift (2 PM - 10 PM)</option>
+                                                                                <option value="Night Shift (10 PM - 6 AM)" <%= staff.shifting === 'Night Shift (10 PM - 6 AM)' ? 'selected' : '' %>>Night Shift (10 PM - 6 AM)</option>
+                                                                                <option value="General Shift (9 AM - 5 PM)" <%= staff.shifting === 'General Shift (9 AM - 5 PM)' ? 'selected' : '' %>>General Shift (9 AM - 5 PM)</option>
+                                                                            </select>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+
+                                                                <hr>
+
+                                                                <!-- Hospital Assignment Section -->
+                                                                <h4 class="section-title">Hospital Assignment</h4>
+                                                                <div class="mb-4">
+                                                                    <div class="row">
+                                                                        <div class="col-12 col-md-6 mb-3">
+                                                                            <label for="assignLocation" class="form-label required-field">Assigned Hospital</label>
+                                                                            <select class="form-control" id="assignLocation" name="assignLocation" required>
+                                                                                <option value="">Select Hospital</option>
+                                                                                <% hospitals.forEach(function(hospital) { %>
+                                                                                    <option value="<%= hospital._id %>" 
+                                                                                            <%= staff.assignLocation && staff.assignLocation.toString() === hospital._id.toString() ? 'selected' : '' %>>
+                                                                                        <%= hospital.hospitalName %> - <%= hospital.address %>
+                                                                                    </option>
+                                                                                <% }); %>
+                                                                            </select>
+                                                                        </div>
+                                                                        <div class="col-12 col-md-6 mb-3 d-flex align-items-end">
+                                                                            <div class="form-check form-switch">
+                                                                                <input class="form-check-input" type="checkbox" 
+                                                                                    id="is_verified" name="is_verified" value="true"
+                                                                                    <%= staff.is_verified ? 'checked' : '' %>>
+                                                                                <label class="form-check-label" for="is_verified">
+                                                                                    Account Verified
+                                                                                </label>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+
+                                                                <hr>
+
+                                                                <!-- Action Buttons -->
+                                                                <div class="row">
+                                                                    <div class="col-12">
+                                                                        <div class="d-flex justify-content-between">
+                                                                            <a href="/admin/list-staff" class="btn btn-secondary">
+                                                                                <i class="fas fa-arrow-left me-2"></i>Back to Staff List
+                                                                            </a>
+                                                                            <div>
+                                                                                <button type="reset" class="btn btn-outline-secondary me-2">
+                                                                                    <i class="fas fa-redo me-2"></i>Reset
+                                                                                </button>
+                                                                                <button type="submit" class="btn btn-primary">
+                                                                                    <i class="fas fa-save me-2"></i>Update Staff
+                                                                                </button>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </form>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- /.container-fluid -->
+                </div>
+                <!-- End of Main Content -->
+
+                <!-- Footer -->
+                <%- include('../layouts/footer.ejs')%>
+                    <!-- End of Footer -->
+
+            </div>
+            <!-- End of Content Wrapper -->
+
+    </div>
+    <!-- End of Page Wrapper -->
+
+    <!-- Scroll to Top Button-->
+    <a class="scroll-to-top rounded" href="#page-top">
+        <i class="fas fa-angle-up"></i>
+    </a>
+
+    <!-- Logout Modal-->
+    <%- include('../layouts/modal.ejs') %>
+
+        <!-- Bootstrap core JavaScript-->
+        <script src="/vendor/jquery/jquery.min.js"></script>
+        <script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+        <!-- Core plugin JavaScript-->
+        <script src="/vendor/jquery-easing/jquery.easing.min.js"></script>
+
+        <!-- Custom scripts for all pages-->
+        <script src="/js/sb-admin-2.min.js"></script>
+
+        <!-- Page level plugins -->
+        <script src="/vendor/chart.js/Chart.min.js"></script>
+
+        <!-- Page level custom scripts -->
+        <script src="/js/demo/chart-area-demo.js"></script>
+        <script src="/js/demo/chart-pie-demo.js"></script>
+
+        <script>
+            // Auto-hide flash messages after 5 seconds
+            setTimeout(() => {
+                $('.alert').alert('close');
+            }, 5000);
+
+            // Dynamic form behavior based on role selection
+            document.getElementById('role').addEventListener('change', function() {
+                const role = this.value;
+                const departmentField = document.getElementById('department');
+                const specializationField = document.getElementById('specialization');
+                
+                if (role === 'doctor') {
+                    departmentField.placeholder = 'e.g., Cardiology, Orthopedics';
+                    specializationField.placeholder = 'e.g., Cardiologist, Orthopedic Surgeon';
+                } else if (role === 'nurse') {
+                    departmentField.placeholder = 'e.g., ICU, Emergency, OPD';
+                    specializationField.placeholder = 'e.g., Critical Care, Emergency Nursing';
+                } else {
+                    departmentField.placeholder = 'e.g., Front Desk, Administration, Accounts';
+                    specializationField.placeholder = 'e.g., Receptionist, Accountant';
+                }
+            });
+
+            // Form validation
+            document.querySelector('form').addEventListener('submit', function(e) {
+                const email = document.getElementById('email').value;
+                const phone = document.getElementById('phone').value;
+                
+                // Basic email validation
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                if (!emailRegex.test(email)) {
+                    e.preventDefault();
+                    alert('Please enter a valid email address');
+                    return;
+                }
+                
+                // Basic phone validation (10 digits)
+                const phoneRegex = /^\d{10}$/;
+                if (!phoneRegex.test(phone.replace(/\D/g, ''))) {
+                    e.preventDefault();
+                    alert('Please enter a valid 10-digit phone number');
+                    return;
+                }
+            });
+        </script>
+
+</body>
+
+</html>
