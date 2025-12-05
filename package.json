@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "using \"Melter\" for image file upload in mongodb",
   "license": "ISC",
-  "author": "sourav",
+  "author": "anuva",
   "type": "commonjs",
   "main": "app.js",
   "scripts": {
